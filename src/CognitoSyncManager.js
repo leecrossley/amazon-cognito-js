@@ -15,6 +15,8 @@
  * limitations under the License.
  */
 
+var AWS = require('aws-sdk');
+
 if (AWS === undefined) {
     throw new Error("AWS SDK must be loaded before loading the Sync Manager.");
 } else {

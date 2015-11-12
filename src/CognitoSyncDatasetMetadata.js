@@ -21,7 +21,8 @@
  * @constructor
  */
 
-AWS = AWS || {};
+var AWS = require('aws-sdk');
+
 AWS.CognitoSyncManager = AWS.CognitoSyncManager || {};
 
 AWS.CognitoSyncManager.DatasetMetadata = (function(){

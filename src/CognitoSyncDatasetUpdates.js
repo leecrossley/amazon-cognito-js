@@ -15,7 +15,8 @@
  * limitations under the License.
  */
 
-AWS = AWS || {};
+var AWS = require('aws-sdk');
+
 AWS.CognitoSyncManager = AWS.CognitoSyncManager || {};
 
 AWS.CognitoSyncManager.DatasetUpdates = (function() {
