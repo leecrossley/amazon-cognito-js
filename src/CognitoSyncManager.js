@@ -161,7 +161,7 @@ if (AWS === undefined) {
      */
 
     AWS.CognitoSyncManager.prototype.getIdentityId = function () {
-        return this.provider.identityId;
+        return this.provider.identityId || this.provider.params.IdentityId || null;
     };
 
 }
