@@ -37,6 +37,11 @@ if (AWS === undefined) {
         this.identityPoolId = this.provider.params.IdentityPoolId;
         this.region = AWS.config.region;
 
+        // Hook to set identityId from cache if it's null in AWS credentials
+        if (!this.provider.identityId && this.provider.params.IdentityId) {
+            this.provider.identityId = this.provider.params.IdentityId;
+        }
+
         // Setup logger.
         this.logger = options.log;
         if (typeof this.logger !== 'function') {
@@ -161,7 +166,7 @@ if (AWS === undefined) {
      */
 
     AWS.CognitoSyncManager.prototype.getIdentityId = function () {
-        return this.provider.identityId || this.provider.params.IdentityId || null;
+        return this.provider.identityId;
     };
 
 }
