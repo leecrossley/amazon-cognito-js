@@ -21,10 +21,6 @@ module.exports = function(grunt) {
         ' * limitations under the License. \n' +
         ' */\n\n',
 
-        qunit: {
-            all: ['tst/**/*.html']
-        },
-
         jshint: {
 
             options: {
@@ -49,7 +45,7 @@ module.exports = function(grunt) {
 
         uglify: {
             options: {
-                sourceMap: true,
+                sourceMap: false,
                 drop_console: true,
                 banner: '<%= banner %>'
             },
@@ -74,7 +70,18 @@ module.exports = function(grunt) {
         watch: {
             scripts: {
                 files: ['src/*.js'],
-                tasks: ['uglify:dist']
+                tasks: ['default']
+            }
+        },
+
+        replace : {
+            main : {
+                src: ['dist/*.js'],
+                overwrite: true,
+                replacements: [{
+                    from: 'var AWS=require("aws-sdk");',
+                    to: ''
+                }]
             }
         }
 
@@ -82,10 +89,10 @@ module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-qunit');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-jsdoc');
+    grunt.loadNpmTasks('grunt-text-replace');
 
-    grunt.registerTask('default', ['qunit']);
+    grunt.registerTask('default', ['jshint', 'uglify', 'replace']);
 
 };

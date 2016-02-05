@@ -49,26 +49,8 @@ if (AWS === undefined) {
             };
         }
 
-        // Check for localStorage availability.
-        var isLsAvailable = (function() {
-            var uid = new Date();
-            var result;
-            try {
-                localStorage.setItem(uid, uid);
-                result = localStorage.getItem(uid) == uid;
-                localStorage.removeItem(uid);
-                return result;
-            } catch (exception) {
-                return false;
-            }
-        }());
-
         // Initialize local store.
-        var storageOps = {};
-        if (isLsAvailable) {
-            storageOps.DataStore = AWS.CognitoSyncManager.StoreLocalStorage;
-        }
-        this.local = new AWS.CognitoSyncManager.LocalStorage(storageOps);
+        this.local = new AWS.CognitoSyncManager.LocalStorage({});
 
         // Initialize remote store.
         this.remote = new AWS.CognitoSyncManager.RemoteStorage(this.identityPoolId, this.provider);
