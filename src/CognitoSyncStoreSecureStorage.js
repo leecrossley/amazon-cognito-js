@@ -55,17 +55,22 @@ AWS.CognitoSyncManager.StoreSecureStorage = (function() {
     CognitoSyncStoreSecureStorage.prototype.set = function (identityId, datasetName, key, value, callback) {
 
         var k = this.makeKey(identityId, datasetName);
+        var context = this;
 
-        var records = JSON.parse(this.store.getItem(k));
-        if (!records) {
-            records = {};
-        }
+        this.store.get(function(records) {
+            if (records) {
+                records = JSON.parse(records);
+            } else {
+                records = {};
+            }
 
-        records[key] = value;
+            records[key] = value;
 
-        this.store.set(function(key) {
-            return callback(null, records);
-        }, callback, k, JSON.stringify(records));
+            context.store.set(function(key) {
+                return callback(null, records);
+            }, callback, k, JSON.stringify(records));
+
+        }, callback, k);
 
         return this;
 
@@ -84,6 +89,7 @@ AWS.CognitoSyncManager.StoreSecureStorage = (function() {
     CognitoSyncStoreSecureStorage.prototype.remove = function (identityId, datasetName, key, callback) {
 
         var k = this.makeKey(identityId, datasetName);
+        var context = this;
 
         this.store.get(function(records) {
             if (records) {
@@ -94,7 +100,7 @@ AWS.CognitoSyncManager.StoreSecureStorage = (function() {
 
             delete(records[key]);
 
-            this.store.set(function(key) {
+            context.store.set(function(key) {
                 return callback(null, records);
             }, callback, k, JSON.stringify(records));
 

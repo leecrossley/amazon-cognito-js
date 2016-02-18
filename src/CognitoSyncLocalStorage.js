@@ -37,7 +37,6 @@ AWS.CognitoSyncManager.LocalStorage = (function() {
         // Choose a data store
         if (options.DataStore) { this.store = new options.DataStore(); }
         else { this.store = new AWS.CognitoSyncManager.StoreInMemory(); }
-
     };
 
     /**

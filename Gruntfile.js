@@ -61,7 +61,8 @@ module.exports = function(grunt) {
                         'src/CognitoSyncRecord.js',
                         'src/CognitoSyncRemoteStorage.js',
                         'src/CognitoSyncStoreInMemory.js',
-                        'src/CognitoSyncStoreLocalStorage.js'
+                        'src/CognitoSyncStoreLocalStorage.js',
+                        'src/CognitoSyncStoreSecureStorage.js'
                     ]
                 }
             }
