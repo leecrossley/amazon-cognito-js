@@ -50,7 +50,7 @@ if (AWS === undefined) {
         }
 
         var storageOps = {};
-        this.local = new AWS.CognitoSyncManager.LocalStorage({});
+
         if (cordova && cordova.plugins && cordova.plugins.SecureStorage) {
             storageOps.DataStore = AWS.CognitoSyncManager.StoreSecureStorage;
         } else {
