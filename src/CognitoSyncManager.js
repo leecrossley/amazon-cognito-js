@@ -49,8 +49,16 @@ if (AWS === undefined) {
             };
         }
 
-        // Initialize local store.
+        var storageOps = {};
         this.local = new AWS.CognitoSyncManager.LocalStorage({});
+        if (cordova && cordova.plugins && cordova.plugins.SecureStorage) {
+            storageOps.DataStore = AWS.CognitoSyncManager.StoreSecureStorage;
+        } else {
+            storageOps.DataStore = AWS.CognitoSyncManager.StoreLocalStorage;
+        }
+
+        // Initialize local store.
+        this.local = new AWS.CognitoSyncManager.LocalStorage(storageOps);
 
         // Initialize remote store.
         this.remote = new AWS.CognitoSyncManager.RemoteStorage(this.identityPoolId, this.provider);

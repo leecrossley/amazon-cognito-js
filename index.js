@@ -8,3 +8,4 @@ require('./src/CognitoSyncRecord');
 require('./src/CognitoSyncRemoteStorage');
 require('./src/CognitoSyncStoreInMemory');
 require('./src/CognitoSyncStoreLocalStorage');
+require('./src/CognitoSyncStoreSecureStorage');
