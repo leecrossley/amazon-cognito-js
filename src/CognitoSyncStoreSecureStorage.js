@@ -22,7 +22,7 @@ AWS.CognitoSyncManager.StoreSecureStorage = (function() {
             return callback(new Error("You must provide an identity id and dataset name."), null);
         }
 
-        this.store.get(function(records) {
+        var onSuccess = function(records) {
             if (records) {
                 records = JSON.parse(records);
             }
@@ -31,7 +31,13 @@ AWS.CognitoSyncManager.StoreSecureStorage = (function() {
             }
 
             return callback(null, undefined);
-        }, callback, k);
+        };
+
+        var onError = function(err) {
+            return callback(null, undefined);
+        };
+
+        this.store.get(onSuccess, onError, k);
 
     };
 
@@ -43,12 +49,18 @@ AWS.CognitoSyncManager.StoreSecureStorage = (function() {
             return callback(new Error("You must provide an identity id and dataset name."), null);
         }
 
-        this.store.get(function(records) {
+        var onSuccess = function(records) {
             if (records) {
                 records = JSON.parse(records);
             }
             return callback(null, records);
-        }, callback, k);
+        };
+
+        var onError = function(err) {
+            return callback(null, {});
+        };
+
+        this.store.get(onSuccess, onError, k);
 
     };
 
@@ -57,7 +69,7 @@ AWS.CognitoSyncManager.StoreSecureStorage = (function() {
         var k = this.makeKey(identityId, datasetName);
         var context = this;
 
-        this.store.get(function(records) {
+        var onSuccess = function(records) {
             if (records) {
                 records = JSON.parse(records);
             } else {
@@ -69,8 +81,19 @@ AWS.CognitoSyncManager.StoreSecureStorage = (function() {
             context.store.set(function(key) {
                 return callback(null, records);
             }, callback, k, JSON.stringify(records));
+        };
 
-        }, callback, k);
+        var onError = function(err) {
+            var records = {};
+
+            records[key] = value;
+
+            context.store.set(function(key) {
+                return callback(null, records);
+            }, callback, k, JSON.stringify(records));
+        };
+
+        this.store.get(onSuccess, onError, k);
 
         return this;
 
@@ -80,9 +103,16 @@ AWS.CognitoSyncManager.StoreSecureStorage = (function() {
 
         var k = this.makeKey(identityId, datasetName);
 
-        this.store.set(function(key) {
+        var onSuccess = function(key) {
             return callback(null, obj);
-        }, callback, k, JSON.stringify(obj));
+        };
+
+        var onError = function(err) {
+            console.log(err);
+            return callback(new Error(err), null);
+        };
+
+        this.store.set(onSuccess, onError, k, JSON.stringify(obj));
 
     };
 
@@ -91,7 +121,7 @@ AWS.CognitoSyncManager.StoreSecureStorage = (function() {
         var k = this.makeKey(identityId, datasetName);
         var context = this;
 
-        this.store.get(function(records) {
+        var onSuccess = function(records) {
             if (records) {
                 records = JSON.parse(records);
             } else {
@@ -103,17 +133,32 @@ AWS.CognitoSyncManager.StoreSecureStorage = (function() {
             context.store.set(function(key) {
                 return callback(null, records);
             }, callback, k, JSON.stringify(records));
+        };
 
-        }, callback, k);
+        var onError = function(err) {
+            var records = {};
+            context.store.set(function(key) {
+                return callback(null, records);
+            }, callback, k, JSON.stringify(records));
+        };
+
+        this.store.get(onSuccess, onError, k);
     };
 
     CognitoSyncStoreSecureStorage.prototype.removeAll = function (identityId, datasetName, callback) {
 
         var k = this.makeKey(identityId, datasetName);
 
-        this.store.remove(function(key) {
+        var onSuccess = function(key) {
             return callback(null, true);
-        }, callback, k);
+        };
+
+        var onError = function(err) {
+            console.log(err);
+            return callback(new Error(err), null);
+        };
+
+        this.store.remove(onSuccess, onError, k);
 
     };
 
