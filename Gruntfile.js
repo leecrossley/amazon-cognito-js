@@ -34,24 +34,18 @@ module.exports = function(grunt) {
 
         },
 
-        jsdoc: {
-            dist: {
-                src: ['src/*.js'],
-                options: {
-                    destination: 'docs'
-                }
-            }
-        },
-
         uglify: {
             options: {
                 sourceMap: false,
                 drop_console: true,
+                compress: false,
+                mangle: false,
+                beautify: true,
                 banner: '<%= banner %>'
             },
             dist: {
                 files: {
-                    "dist/amazon-cognito.min.js": [
+                    "dist/cognito-manager.js": [
                         'src/CognitoSyncManager.js',
                         'src/CognitoSyncConflict.js',
                         'src/CognitoSyncDataset.js',
@@ -80,7 +74,7 @@ module.exports = function(grunt) {
                 src: ['dist/*.js'],
                 overwrite: true,
                 replacements: [{
-                    from: 'var AWS=require("aws-sdk");',
+                    from: 'var AWS = require("aws-sdk");',
                     to: ''
                 }]
             }
@@ -91,7 +85,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-jsdoc');
     grunt.loadNpmTasks('grunt-text-replace');
 
     grunt.registerTask('default', ['jshint', 'uglify', 'replace']);

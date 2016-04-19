@@ -476,6 +476,7 @@ AWS.CognitoSyncManager.LocalStorage = (function() {
         var root = this;
 
         records = records || [];
+        records = records.slice();
 
         var request = function () {
 
